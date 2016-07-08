@@ -20,7 +20,10 @@ void load(const char* srcdir, smat_t &R, testset_t &T, bool with_weights){
 		T.load(m, n, nnz, filename);
 	}
 	fclose(fp);
-	//double bias = R.get_global_mean(); R.remove_bias(bias); T.remove_bias(bias);
+#ifdef WITH_AVG
+	double bias = R.get_global_mean(); R.remove_bias(bias); T.remove_bias(bias);
+#endif
+	
 	return ;
 }
 

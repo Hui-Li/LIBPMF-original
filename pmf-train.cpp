@@ -169,8 +169,19 @@ void run_ccdr1(parameter &param, const char* input_file_name, const char* model_
 	initial_col(W, param.k, R.rows);
 	initial_col(H, param.k, R.cols);
 
-	//printf("global mean %g\n", R.get_global_mean());
-	//printf("global mean %g W_0 %g\n", R.get_global_mean(), norm(W[0]));
+	string w = "q";
+ 	string h = "p";
+
+#ifdef WITH_AVG
+	printf("global mean %g\n", R.get_global_mean());
+	// printf("global mean %g W_0 %g\n", R.get_global_mean(), norm(W[0]));
+	w += "-avg.txt";
+	h += "-avg.txt";
+#else
+	w += ".txt";
+	h += ".txt";
+#endif
+	
 	puts("starts!");
 	double time = omp_get_wtime();
 	ccdr1(R, W, H, T, param);
@@ -186,8 +197,7 @@ void run_ccdr1(parameter &param, const char* input_file_name, const char* model_
 		fclose(model_fp_H);
 	}*/
 	
-	string w = "q.txt";
- 	string h = "p.txt";
+
 
 	ofstream file1(w.c_str());
 
@@ -220,6 +230,8 @@ void run_ccdr1(parameter &param, const char* input_file_name, const char* model_
 
 	return ;
 }
+
+#define WITH_AVG
 
 int main(int argc, char* argv[]){
 	char input_file_name[1024];
